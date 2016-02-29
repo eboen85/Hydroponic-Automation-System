@@ -21,16 +21,15 @@ def pumpcycle(pump_time,wait_time,cycle_count):
         print strftime("%Y-%m-%d %H:%M:%S") + "Pump is coming on for " + str(pump_time*60)
 	GPIO.output(gpio_pump, GPIO.LOW) #Turn pump on
 	
-	now = time.strftime("%Y-%m-%d %H:%M:%S")
-	sql_on = 'INSERT INTO Cycle(starttime) VALUES ("%s")' %(now)
+	pump_on = time.strftime("%Y-%m-%d %H:%M:%S")
 	
 	time.sleep(pump_time*60) # pump timer
 
 	print strftime("%Y-%m-%d %H:%M:%S") + "Pump is turning off "
 	GPIO.output(gpio_pump, GPIO.HIGH) # switch off pump
 	
-	now = time.strftime("%Y-%m-%d %H:%M:%S")
-	sql_off = 'INSERT INTO Cycle(endtime) VALUES ("%s")' %(now)
+	pump_off = time.strftime("%Y-%m-%d %H:%M:%S")
+	sql = 'INSERT INTO Cycle(starttime, endtime) VALUES ("%s, %s")' %(pump_on, pump_off)
 
 	print strftime("%Y-%m-%d %H:%M:%S") + "Pump is going into standby for: " + str(wait_time*60)
 
