@@ -12,7 +12,7 @@ gpio_pump=18                    # Sets the pump to pin 18
 GPIO.setwarnings(False)          # Set GPIO warnings to False
 GPIO.setup(gpio_light, GPIO.OUT) # Sets light output to GPIO
 GPIO.output(gpio_light, GPIO.HIGH)    # Sets light output to True
-
+	cur = phss.cursor() 		#prepare cursor object 
 def lightcycle(light_time,wait_time,cycle_count):
     if cycle_count ==0:
 	cycle_count=999
@@ -29,8 +29,9 @@ def lightcycle(light_time,wait_time,cycle_count):
 	GPIO.output(gpio_light, GPIO.HIGH) # switch off light
 	
 	light_off = time.strftime("%Y-%m-%d %H:%M:%S")
-	sql = 'INSERT INTO Lighting(starttime, endtime) VALUES ("%s, %s")' %(light_on, light_off)
-
+	sql = 'INSERT INTO Lighting(light_on, light_off) VALUES ("%s, %s")' %(light_on, light_off)
+	  cur.execute(sql)
+      phss.commit()
 	print strftime("%Y-%m-%d %H:%M:%S") + "Light is going into standby for: " + str(wait_time*60)
 
 	time.sleep(wait_time*60)  # system go to sleep
