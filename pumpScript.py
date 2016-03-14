@@ -12,7 +12,7 @@ gpio_pump=18                    # Sets the pump to pin 18
 GPIO.setwarnings(False)          # Set GPIO warnings to False
 GPIO.setup(gpio_pump, GPIO.OUT) # Sets pump output to GPIO
 GPIO.output(gpio_pump, GPIO.HIGH)    # Sets pump output to True
-
+	cur = phss.cursor() 		#prepare cursor object 
 def pumpcycle(pump_time,wait_time,cycle_count):
     if cycle_count ==0:
 	cycle_count=999
@@ -29,8 +29,9 @@ def pumpcycle(pump_time,wait_time,cycle_count):
 	GPIO.output(gpio_pump, GPIO.HIGH) # switch off pump
 	
 	pump_off = time.strftime("%Y-%m-%d %H:%M:%S")
-	sql = 'INSERT INTO Cycle(starttime, endtime) VALUES ("%s, %s")' %(pump_on, pump_off)
-
+	sql = 'INSERT INTO Cycle(pump_on, pump_off) VALUES ("%s, %s")' %(pump_on, pump_off)
+	  cur.execute(sql)
+      phss.commit()
 	print strftime("%Y-%m-%d %H:%M:%S") + "Pump is going into standby for: " + str(wait_time*60)
 
 	time.sleep(wait_time*60)  # system go to sleep
